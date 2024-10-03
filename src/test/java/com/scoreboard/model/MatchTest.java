@@ -1,5 +1,6 @@
 package com.scoreboard.model;
 
+import com.scoreboard.exception.InvalidScoreException;
 import com.scoreboard.exception.InvalidTeamNameException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -59,7 +60,7 @@ class MatchTest {
             "Team C, Team D, 3, 3",
             "Team E, Team F, 0, 5"
     })
-    public void shouldUpdateScore(String homeTeam, String awayTeam, int homeScore, int awayScore) throws InvalidTeamNameException {
+    public void shouldUpdateScore(String homeTeam, String awayTeam, int homeScore, int awayScore) throws InvalidTeamNameException, InvalidScoreException {
         // Given
         Match match = new Match(homeTeam, awayTeam);
 

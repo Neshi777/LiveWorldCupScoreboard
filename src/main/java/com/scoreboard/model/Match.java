@@ -1,5 +1,6 @@
 package com.scoreboard.model;
 
+import com.scoreboard.exception.InvalidScoreException;
 import com.scoreboard.exception.InvalidTeamNameException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,8 @@ public class Match {
         this.awayScore = 0;
     }
 
-    public void updateScore(int homeScore, int awayScore) {
+    public void updateScore(int homeScore, int awayScore) throws InvalidScoreException {
+        validateScore(homeScore, awayScore);
         this.homeScore = homeScore;
         this.awayScore = awayScore;
     }
@@ -48,6 +50,14 @@ public class Match {
             String errorMessage = String.format("Home team and away team cannot be the same, home: '%s', away: '%s'", homeTeam, awayTeam);
             logger.error(errorMessage);
             throw new InvalidTeamNameException(errorMessage);
+        }
+    }
+
+    private void validateScore(int homeScore, int awayScore) throws InvalidScoreException {
+        if (homeScore < 0 || awayScore < 0) {
+            String errorMessage = String.format("Scores cannot be negative, home: %d - away: %d", homeScore, awayScore);
+            logger.error(errorMessage);
+            throw new InvalidScoreException(errorMessage);
         }
     }
 
