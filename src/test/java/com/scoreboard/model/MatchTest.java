@@ -59,7 +59,7 @@ class MatchTest {
             "Team C, Team D, 3, 3",
             "Team E, Team F, 0, 5"
     })
-    public void shouldUpdateScore(String homeTeam, String awayTeam, int homeScore, int awayScore) {
+    public void shouldUpdateScore(String homeTeam, String awayTeam, int homeScore, int awayScore) throws InvalidTeamNameException {
         // Given
         Match match = new Match(homeTeam, awayTeam);
 

@@ -24,6 +24,11 @@ public class Match {
         this.awayScore = 0;
     }
 
+    public void updateScore(int homeScore, int awayScore) {
+        this.homeScore = homeScore;
+        this.awayScore = awayScore;
+    }
+
     private void validateTeamNames(String homeTeam, String awayTeam) throws InvalidTeamNameException {
         validateTeamsNullOrBlank(homeTeam, awayTeam);
 
