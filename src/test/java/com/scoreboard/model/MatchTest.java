@@ -1,5 +1,6 @@
 package com.scoreboard.model;
 
+import com.scoreboard.exception.InvalidTeamNameException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -17,7 +18,7 @@ class MatchTest {
             "Team C, Team D",
             "Team E, Team F"
     })
-    public void shouldCreateMatch(String homeTeam, String awayTeam) {
+    public void shouldCreateMatch(String homeTeam, String awayTeam) throws InvalidTeamNameException {
         // Given
         Match match;
 

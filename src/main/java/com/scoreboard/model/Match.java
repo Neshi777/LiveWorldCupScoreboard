@@ -1,21 +1,35 @@
 package com.scoreboard.model;
 
+import com.scoreboard.exception.InvalidTeamNameException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Objects;
 import java.util.UUID;
 
 public class Match {
+    private static final Logger logger = LoggerFactory.getLogger(Match.class);
     private final UUID id;
     private final String homeTeam;
     private final String awayTeam;
     private int homeScore;
     private int awayScore;
 
-    public Match(String homeTeam, String awayTeam) {
+    public Match(String homeTeam, String awayTeam) throws InvalidTeamNameException {
+        validateTeamNames(homeTeam, awayTeam);
         this.id = UUID.randomUUID();
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.homeScore = 0;
         this.awayScore = 0;
+    }
+
+    private void validateTeamNames(String homeTeam, String awayTeam) throws InvalidTeamNameException {
+        if (homeTeam.isBlank() || awayTeam.isBlank()) {
+            String errorMessage = String.format("Team names cannot be empty home: '%s' , away: '%s'", homeTeam, awayTeam);
+            logger.error(errorMessage);
+            throw new InvalidTeamNameException(errorMessage);
+        }
     }
 
     public UUID getId() {
