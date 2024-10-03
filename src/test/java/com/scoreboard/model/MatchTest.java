@@ -71,4 +71,18 @@ class MatchTest {
         assertEquals(awayScore, match.getAwayScore());
     }
 
+    @ParameterizedTest(name = "Throw InvalidScoreException for scores {0} - {1}")
+    @CsvSource({
+            "-1, 1",   // Invalid home score
+            "1, -1",   // Invalid away score
+            "-10, -5"  // Both scores invalid
+    })
+    public void shouldThrowInvalidScoreUpdate(int homeScore, int awayScore) throws InvalidTeamNameException {
+        // Given
+        Match match = new Match("Team A", "Team B");
+
+        // When & Then
+        assertThrows(InvalidScoreException.class, () -> match.updateScore(homeScore, awayScore));
+    }
+
 }
