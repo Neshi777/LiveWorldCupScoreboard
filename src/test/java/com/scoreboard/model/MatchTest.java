@@ -53,4 +53,22 @@ class MatchTest {
         );
     }
 
+    @ParameterizedTest(name = "Update score for match between {0} and {1} to {2} - {3}")
+    @CsvSource({
+            "Team A, Team B, 2, 1",
+            "Team C, Team D, 3, 3",
+            "Team E, Team F, 0, 5"
+    })
+    public void shouldUpdateScore(String homeTeam, String awayTeam, int homeScore, int awayScore) {
+        // Given
+        Match match = new Match(homeTeam, awayTeam);
+
+        // When
+        match.updateScore(homeScore, awayScore);
+
+        // Then
+        assertEquals(homeScore, match.getHomeScore());
+        assertEquals(awayScore, match.getAwayScore());
+    }
+
 }
