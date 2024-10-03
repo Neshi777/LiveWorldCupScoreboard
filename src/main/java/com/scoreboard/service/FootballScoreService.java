@@ -27,10 +27,19 @@ public class FootballScoreService {
         }
     }
 
-    public UUID updateScore(UUID id, int homeScore, int awayScore) throws InvalidScoreException {
+    public UUID updateScore(UUID id, int homeScore, int awayScore) throws InvalidScoreException, ScoreServiceException {
         Match match = matches.get(id);
-        match.updateScore(homeScore, awayScore);
-        return match.getId();
+        if (match == null) {
+            String errorMessage = String.format("Upon Score Update match of ID %s not found", id);
+            throw new ScoreServiceException(errorMessage);
+        }
+        try {
+            match.updateScore(homeScore, awayScore);
+            return match.getId();
+        } catch (InvalidScoreException e) {
+            String errorMessage = String.format("Error updating match: %s", e.getMessage());
+            throw new ScoreServiceException(errorMessage, e);
+        }
     }
 
     public List<Match> getSummary() {
