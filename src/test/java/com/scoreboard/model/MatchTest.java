@@ -48,7 +48,8 @@ class MatchTest {
                 Arguments.of("", "Team B"), // Empty home team
                 Arguments.of("Team A", ""), // Empty away team
                 Arguments.of(null, "Team A"), // Null home team
-                Arguments.of("Team A", null) // Null away team
+                Arguments.of("Team A", null), // Null away team
+                Arguments.of("Team A", "Team A") // Same home and away team
         );
     }
 
