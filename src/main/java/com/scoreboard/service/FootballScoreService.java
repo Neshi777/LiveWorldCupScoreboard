@@ -1,5 +1,6 @@
 package com.scoreboard.service;
 
+import com.scoreboard.exception.InvalidScoreException;
 import com.scoreboard.exception.InvalidTeamNameException;
 import com.scoreboard.exception.MatchAlreadyExistsException;
 import com.scoreboard.exception.ScoreServiceException;
@@ -24,6 +25,12 @@ public class FootballScoreService {
         } catch (InvalidTeamNameException | MatchAlreadyExistsException e) {
             throw new ScoreServiceException("Error starting match: " + e.getMessage(), e);
         }
+    }
+
+    public UUID updateScore(UUID id, int homeScore, int awayScore) throws InvalidScoreException {
+        Match match = matches.get(id);
+        match.updateScore(homeScore, awayScore);
+        return match.getId();
     }
 
     public List<Match> getSummary() {

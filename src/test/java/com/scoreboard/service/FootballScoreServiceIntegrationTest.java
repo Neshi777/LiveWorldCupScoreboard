@@ -1,5 +1,6 @@
 package com.scoreboard.service;
 
+import com.scoreboard.exception.InvalidScoreException;
 import com.scoreboard.exception.ScoreServiceException;
 import com.scoreboard.model.Match;
 import org.junit.jupiter.api.Assertions;
@@ -40,7 +41,7 @@ public class FootballScoreServiceIntegrationTest {
         // Then
         List<String> expectedOrder = List.of(
                 "Argentina - Australia",
-                "Uruguay - ",
+                "Uruguay - Italy",
                 "Germany - France",
                 "Spain - Brazil",
                 "Mexico - Canada"
@@ -59,7 +60,7 @@ public class FootballScoreServiceIntegrationTest {
             "Uruguay, Italy, 3, 2",
             "Germany, Canada, 1, 1"
     })
-    public void shouldUpdateMatchScore(String homeTeam, String awayTeam, int homeScore, int awayScore) throws ScoreServiceException {
+    public void shouldUpdateMatchScore(String homeTeam, String awayTeam, int homeScore, int awayScore) throws ScoreServiceException, InvalidScoreException {
         // Given
         UUID matchId = service.startMatch(homeTeam, awayTeam);
         Match match = findMatchById(matchId);
