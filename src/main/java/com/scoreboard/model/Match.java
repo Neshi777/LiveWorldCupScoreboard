@@ -25,8 +25,22 @@ public class Match {
     }
 
     private void validateTeamNames(String homeTeam, String awayTeam) throws InvalidTeamNameException {
+        validateTeamsNullOrBlank(homeTeam, awayTeam);
+
+        validateDifferentTeams(homeTeam, awayTeam);
+    }
+
+    private void validateTeamsNullOrBlank(String homeTeam, String awayTeam) throws InvalidTeamNameException {
         if (homeTeam == null || homeTeam.isBlank() || awayTeam == null || awayTeam.isBlank()) {
-            String errorMessage = String.format("Team names cannot be null or empty home: '%s' , away: '%s'", homeTeam, awayTeam);
+            String errorMessage = String.format("Team names cannot be null or empty, home: '%s' , away: '%s'", homeTeam, awayTeam);
+            logger.error(errorMessage);
+            throw new InvalidTeamNameException(errorMessage);
+        }
+    }
+
+    private void validateDifferentTeams(String homeTeam, String awayTeam) throws InvalidTeamNameException {
+        if (homeTeam.equals(awayTeam)) {
+            String errorMessage = String.format("Home team and away team cannot be the same, home: '%s', away: '%s'", homeTeam, awayTeam);
             logger.error(errorMessage);
             throw new InvalidTeamNameException(errorMessage);
         }
