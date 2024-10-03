@@ -1,10 +1,13 @@
 package com.scoreboard.model;
 
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class MatchTest {
 
@@ -28,6 +31,22 @@ class MatchTest {
         assertEquals(0, match.getHomeScore());
         assertEquals(awayTeam, match.getAwayTeam());
         assertEquals(0, match.getAwayScore());
+    }
+
+    @ParameterizedTest(name = "Throw InvalidTeamNameException for home team: {0} and away team: {1}")
+    @MethodSource("invalidTeamNamesProvider")
+    public void shouldThrowInvalidTeamNamesExceptions(String homeTeam, String awayTeam) {
+        // Given - no specific setup needed for this test case
+
+        // When & Then
+        assertThrows(InvalidTeamNameException.class, () -> new Match(homeTeam, awayTeam));
+    }
+
+    private static Stream<Arguments> invalidTeamNamesProvider() {
+        return Stream.of(
+                Arguments.of("", "Team B"), // Empty home team
+                Arguments.of("Team A", "") // Empty away team
+        );
     }
 
 }
