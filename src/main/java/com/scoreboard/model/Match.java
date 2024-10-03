@@ -25,8 +25,8 @@ public class Match {
     }
 
     private void validateTeamNames(String homeTeam, String awayTeam) throws InvalidTeamNameException {
-        if (homeTeam.isBlank() || awayTeam.isBlank()) {
-            String errorMessage = String.format("Team names cannot be empty home: '%s' , away: '%s'", homeTeam, awayTeam);
+        if (homeTeam == null || homeTeam.isBlank() || awayTeam == null || awayTeam.isBlank()) {
+            String errorMessage = String.format("Team names cannot be null or empty home: '%s' , away: '%s'", homeTeam, awayTeam);
             logger.error(errorMessage);
             throw new InvalidTeamNameException(errorMessage);
         }
