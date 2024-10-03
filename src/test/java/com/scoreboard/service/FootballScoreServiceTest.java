@@ -1,5 +1,6 @@
 package com.scoreboard.service;
 
+import com.scoreboard.exception.InvalidTeamNameException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -21,7 +22,7 @@ public class FootballScoreServiceTest {
             "Mexico, Canada",
             "Spain, Brazil"
     })
-    public void shouldStartMatch(String homeTeam, String awayTeam) {
+    public void shouldStartMatch(String homeTeam, String awayTeam) throws InvalidTeamNameException {
         // Given
         UUID matchId;
 
