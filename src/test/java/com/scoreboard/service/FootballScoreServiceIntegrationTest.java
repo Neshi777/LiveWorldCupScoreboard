@@ -13,8 +13,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class FootballScoreServiceIntegrationTest {
@@ -79,6 +78,15 @@ public class FootballScoreServiceIntegrationTest {
         // Then
         assertEquals(homeScore, updatedMatch.getHomeScore(), "Home score should be updated correctly.");
         assertEquals(awayScore, updatedMatch.getAwayScore(), "Away score should be updated correctly.");
+    }
+
+    @Test
+    public void shouldThrowServiceExceptionWhenUpdatingNonexistentMatch() throws ScoreServiceException {
+        // Given
+        service.startMatch("Mexico", "Canada");
+
+        // When & Then:
+        assertThrows(ScoreServiceException.class, () -> service.updateScore(UUID.randomUUID(), 1, 1));
     }
 
     private Match findMatchById(UUID id) {
