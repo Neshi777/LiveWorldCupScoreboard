@@ -53,6 +53,35 @@ public class FootballScoreServiceIntegrationTest {
         Assertions.assertEquals(actualOrder, expectedOrder, "The match order is incorrect");
     }
 
+    @Test
+    public void shouldGetUpdatedScoreMatchesSummaryProperOrder() throws ScoreServiceException, InvalidScoreException {
+        // Given
+        startMatchAndUpdateScore("Mexico", "Canada", 0, 5);
+        startMatchAndUpdateScore("Spain", "Brazil", 10, 2);
+        startMatchAndUpdateScore("Germany", "France", 2, 2);
+        startMatchAndUpdateScore("Uruguay", "Italy", 6, 6);
+        startMatchAndUpdateScore("Argentina", "Australia", 3, 1);
+
+        // When
+        List<Match> summary = service.getSummary();
+
+        // Then
+        List<String> expectedOrder = List.of(
+                "Uruguay - Italy",
+                "Spain - Brazil",
+                "Mexico - Canada",
+                "Argentina - Australia",
+                "Germany - France"
+        );
+
+        List<String> actualOrder = summary.stream()
+                .map(match -> match.getHomeTeam() + " - " + match.getAwayTeam())
+                .toList();
+
+        Assertions.assertEquals(actualOrder, expectedOrder, "The match order is incorrect");
+    }
+
+
     @ParameterizedTest(name = "Update score for match between {0} and {1} with scores {2} and {3}")
     @CsvSource({
             "Argentina, Australia, 2, 1",
@@ -87,6 +116,11 @@ public class FootballScoreServiceIntegrationTest {
 
         // When & Then:
         assertThrows(ScoreServiceException.class, () -> service.updateScore(UUID.randomUUID(), 1, 1));
+    }
+
+    private void startMatchAndUpdateScore(String homeTeam, String awayTeam, int homeScore, int awayScore) throws ScoreServiceException, InvalidScoreException {
+        UUID matchId = service.startMatch(homeTeam, awayTeam);
+        service.updateScore(matchId, homeScore, awayScore);
     }
 
     private Match findMatchById(UUID id) {
