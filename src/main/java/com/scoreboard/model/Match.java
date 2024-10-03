@@ -7,9 +7,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Match {
     private static final Logger logger = LoggerFactory.getLogger(Match.class);
+    private static final AtomicInteger counter = new AtomicInteger(0);
+    private final int startOrder;
     private final UUID id;
     private final String homeTeam;
     private final String awayTeam;
@@ -18,6 +21,7 @@ public class Match {
 
     public Match(String homeTeam, String awayTeam) throws InvalidTeamNameException {
         validateTeamNames(homeTeam, awayTeam);
+        this.startOrder = counter.incrementAndGet();
         this.id = UUID.randomUUID();
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
@@ -81,16 +85,20 @@ public class Match {
         return awayScore;
     }
 
+    public int getStartOrder() {
+        return startOrder;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Match match = (Match) o;
-        return homeScore == match.homeScore && id.equals(match.id) && homeTeam.equals(match.homeTeam) && awayTeam.equals(match.awayTeam);
+        return startOrder == match.startOrder && id.equals(match.id) && homeTeam.equals(match.homeTeam) && awayTeam.equals(match.awayTeam);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, homeTeam);
+        return Objects.hash(startOrder, id, homeTeam, awayTeam);
     }
 }

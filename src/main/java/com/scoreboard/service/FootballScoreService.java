@@ -7,9 +7,8 @@ import com.scoreboard.model.Match;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class FootballScoreService {
     private static final Logger logger = LoggerFactory.getLogger(FootballScoreService.class);
@@ -25,6 +24,13 @@ public class FootballScoreService {
         } catch (InvalidTeamNameException | MatchAlreadyExistsException e) {
             throw new ScoreServiceException("Error starting match: " + e.getMessage(), e);
         }
+    }
+
+    public List<Match> getSummary() {
+        return matches.values().stream()
+                .sorted(Comparator.comparingInt((Match m) -> m.getHomeScore() + m.getAwayScore())
+                        .thenComparing(Match::getStartOrder).reversed())
+                .collect(Collectors.toList());
     }
 
     private void validateMatchExists(String homeTeam, String awayTeam) throws MatchAlreadyExistsException {
