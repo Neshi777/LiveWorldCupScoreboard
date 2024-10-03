@@ -42,8 +42,11 @@ public class FootballScoreService {
         }
     }
 
-    public UUID finishMatch(UUID id) {
-        matches.remove(id);
+    public UUID finishMatch(UUID id) throws ScoreServiceException {
+        if (matches.remove(id) == null) {
+            String errorMessage = String.format("Match with ID: %s not found", id);
+            throw new ScoreServiceException(errorMessage);
+        }
         return id;
     }
 
