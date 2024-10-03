@@ -42,6 +42,11 @@ public class FootballScoreService {
         }
     }
 
+    public UUID finishMatch(UUID id) {
+        matches.remove(id);
+        return id;
+    }
+
     public List<Match> getSummary() {
         return matches.values().stream()
                 .sorted(Comparator.comparingInt((Match m) -> m.getHomeScore() + m.getAwayScore())
