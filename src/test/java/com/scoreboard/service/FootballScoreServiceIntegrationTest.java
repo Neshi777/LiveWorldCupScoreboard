@@ -134,6 +134,16 @@ public class FootballScoreServiceIntegrationTest {
         assertEquals(service.getSummary().size(), 1, "Match summary should have one less match");
     }
 
+    @Test
+    public void shouldThrowExceptionUponNonexistentMatchFinish() throws ScoreServiceException {
+        // Given
+        service.startMatch("Mexico", "Canada");
+        UUID nonExistentMatchId = UUID.randomUUID();
+
+        // When & Then
+        assertThrows(ScoreServiceException.class, () -> service.finishMatch(nonExistentMatchId), "Non-existent match should not be finished and ScoreServiceException should be thrown");
+    }
+
     private void startMatchAndUpdateScore(String homeTeam, String awayTeam, int homeScore, int awayScore) throws ScoreServiceException, InvalidScoreException {
         UUID matchId = service.startMatch(homeTeam, awayTeam);
         service.updateScore(matchId, homeScore, awayScore);
